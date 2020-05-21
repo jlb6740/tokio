@@ -2,10 +2,10 @@
 
 use crate::loom::sync::{Arc, Condvar, Mutex};
 use crate::loom::thread;
-use crate::runtime::{self, io, time, Builder, Callback};
-use crate::runtime::blocking::shutdown;
 use crate::runtime::blocking::schedule::NoopSchedule;
+use crate::runtime::blocking::shutdown;
 use crate::runtime::blocking::task::BlockingTask;
+use crate::runtime::{self, io, time, Builder, Callback};
 use crate::task::{self, JoinHandle};
 
 use std::cell::Cell;
@@ -53,7 +53,6 @@ struct Inner {
 
     /// Source of `Instant::now()`
     clock: time::Clock,
-
 }
 
 struct Shared {
@@ -234,7 +233,7 @@ impl Spawner {
 
     fn spawn_thread(&self, shutdown_tx: shutdown::Sender) {
         let mut builder = thread::Builder::new().name(self.inner.thread_name.clone());
-
+        println!("Spawning OS thread in Tokio!");
         if let Some(stack_size) = self.inner.stack_size {
             builder = builder.stack_size(stack_size);
         }
